@@ -1,26 +1,123 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --cream: #f4efe4;
+  --ink: #14120f;
+  --cobalt: #2c3cf0;
+  --tangerine: #ff5a1f;
+  --sun: #ffc933;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-cream: var(--cream);
+  --color-ink: var(--ink);
+  --color-cobalt: var(--cobalt);
+  --color-tangerine: var(--tangerine);
+  --color-sun: var(--sun);
+  --font-sans: var(--font-hanken);
+  --font-display: var(--font-unbounded);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-hanken), system-ui, sans-serif;
+}
+
+::selection {
+  background: var(--sun);
+  color: var(--ink);
+}
+
+/* ---------- 3D ---------- */
+
+.scene {
+  perspective: 1100px;
+}
+
+.tilt {
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transform-style: preserve-3d;
+  transition: transform 0.25s ease-out;
+  will-change: transform;
+}
+
+.pop-1 {
+  transform: translateZ(28px);
+}
+.pop-2 {
+  transform: translateZ(64px);
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateZ(70px) translateY(0) rotate(var(--r, 0deg));
+  }
+  50% {
+    transform: translateZ(90px) translateY(-10px) rotate(var(--r, 0deg));
+  }
+}
+
+.float {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* ---------- Faixas de marcas ---------- */
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 38s linear infinite;
+}
+
+.marquee-track.reverse {
+  animation-direction: reverse;
+  animation-duration: 46s;
+}
+
+/* ---------- Entrada ao rolar a página ---------- */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(56px) rotateX(14deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 55%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .tilt {
+    transform: none !important;
+  }
+  .float,
+  .marquee-track,
+  .reveal {
+    animation: none;
+  }
 }
