@@ -29,43 +29,40 @@ export function ContactForm({ whatsapp }: { whatsapp: string }) {
   }
 
   const field =
-    "mt-2 w-full border-2 border-ink bg-cream px-4 py-3 text-base outline-none focus:bg-white focus:shadow-[4px_4px_0_0_var(--cobalt)]";
+    "mt-1 w-full rounded-none border-0 border-b border-foreground/25 bg-transparent px-0 py-3 text-base outline-none transition-colors focus:border-foreground";
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className="space-y-5 border-2 border-ink bg-cream p-6 shadow-[10px_10px_0_0_var(--ink)] md:p-8"
-    >
-      <div className="grid gap-5 sm:grid-cols-2">
-        <label className="text-sm font-bold">
+    <form onSubmit={onSubmit} className="space-y-7">
+      <div className="grid gap-7 sm:grid-cols-2">
+        <label className="text-sm text-muted">
           Seu nome
-          <input name="name" required autoComplete="name" className={field} />
+          <input name="name" required autoComplete="name" className={field + " text-foreground"} />
         </label>
-        <label className="text-sm font-bold">
+        <label className="text-sm text-muted">
           Empresa ou marca
-          <input name="company" autoComplete="organization" className={field} />
+          <input name="company" autoComplete="organization" className={field + " text-foreground"} />
         </label>
       </div>
-      <label className="block text-sm font-bold">
+      <label className="block text-sm text-muted">
         O que você precisa?
-        <select name="type" className={field} defaultValue={types[0]}>
+        <select name="type" className={field + " text-foreground"} defaultValue={types[0]}>
           {types.map((t) => (
             <option key={t}>{t}</option>
           ))}
         </select>
       </label>
-      <label className="block text-sm font-bold">
+      <label className="block text-sm text-muted">
         Conte um pouco sobre o projeto
-        <textarea name="message" required rows={5} className={field} />
+        <textarea name="message" required rows={4} className={field + " resize-none text-foreground"} />
       </label>
       <button
         type="submit"
-        className="w-full rounded-full border-2 border-ink bg-ink px-6 py-3.5 font-bold text-cream transition-colors hover:bg-cobalt"
+        className="rounded-full bg-foreground px-8 py-3 text-background transition-opacity hover:opacity-80"
       >
         Enviar pelo WhatsApp
       </button>
       {sent && (
-        <p role="status" className="text-sm font-medium">
+        <p role="status" className="text-sm text-muted">
           O WhatsApp abriu com a sua mensagem pronta. É só enviar.
         </p>
       )}

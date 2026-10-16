@@ -3,25 +3,26 @@ import { profile, stats } from "@/data/site";
 import { Tilt } from "./Tilt";
 
 export function Hero() {
-  const [first, ...rest] = profile.name.toUpperCase().split(" ");
+  const [first, ...rest] = profile.name.split(" ");
 
   return (
-    <section id="top" className="bg-cobalt text-cream">
-      <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 pb-20 pt-12 md:grid-cols-12 md:pb-24 md:pt-16">
-        <div className="md:col-span-8">
-          <h1 className="font-display text-[clamp(2.4rem,10.4vw,8rem)] font-black leading-[0.92] tracking-tighter md:text-[clamp(3rem,6.2vw,5.9rem)]">
-            <span className="block">{first}</span>
-            <span className="block text-sun">{rest.join(" ")}</span>
+    <section id="top">
+      <div className="mx-auto grid max-w-6xl items-end gap-14 px-6 pb-20 pt-14 md:grid-cols-12 md:pb-28 md:pt-24">
+        <div className="md:col-span-7">
+          <p className="text-sm uppercase tracking-[0.2em] text-muted">{profile.tagline}</p>
+          <h1 className="mt-6 font-display text-[clamp(2.2rem,10vw,4rem)] font-semibold leading-[1.05] tracking-tighter md:text-[clamp(2.6rem,5.2vw,4.6rem)]">
+            {first}
+            <br />
+            <span className="text-muted">{rest.join(" ")}</span>
           </h1>
-
-          <p className="mt-8 max-w-lg text-xl font-medium leading-snug md:text-2xl">
-            De Aracaju, criador da Rayssa Rayanna. Faço o público rir no palco, no teatro e na internet, e
-            levo a sua marca junto.
+          <p className="mt-8 max-w-md text-lg leading-relaxed text-muted">
+            De Aracaju, criador da Rayssa Rayanna. Faço o público rir no palco, no teatro e na
+            internet, e levo a sua marca junto.
           </p>
-          <div className="mt-8 flex flex-wrap gap-4">
+          <div className="mt-10 flex flex-wrap items-center gap-6">
             <a
               href="#contratar"
-              className="rounded-full border-2 border-ink bg-sun px-7 py-3 font-bold text-ink shadow-[4px_4px_0_0_var(--ink)] transition-transform hover:-translate-x-px hover:-translate-y-px"
+              className="rounded-full bg-foreground px-7 py-3 text-background transition-opacity hover:opacity-80"
             >
               Quero contratar
             </a>
@@ -29,58 +30,45 @@ export function Hero() {
               href={profile.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full border-2 border-cream px-7 py-3 font-bold transition-colors hover:bg-cream hover:text-ink"
+              className="underline decoration-line underline-offset-8 transition-colors hover:decoration-foreground"
             >
               {profile.handle}
             </a>
           </div>
         </div>
 
-        <div className="md:col-span-4">
-          <Tilt max={10}>
-            <div className="relative mx-auto aspect-[4/5] w-full max-w-xs -rotate-2 overflow-hidden rounded-2xl border-2 border-ink bg-sun shadow-[10px_10px_0_0_var(--ink)] md:max-w-none">
+        <div className="md:col-span-5">
+          <Tilt max={5}>
+            <div className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-sm bg-surface shadow-[0_40px_70px_-30px_rgba(18,18,18,0.35)] md:max-w-none">
               {profile.photo ? (
                 <Image
                   src={profile.photo}
                   alt={profile.name}
                   fill
                   priority
-                  sizes="(min-width: 768px) 24rem, 90vw"
-                  className="object-cover"
+                  sizes="(min-width: 768px) 28rem, 90vw"
+                  className="object-cover object-top"
                 />
               ) : (
                 <div
                   role="img"
                   aria-label="Espaço reservado para a foto do Igor"
-                  className="flex h-full w-full items-center justify-center [background:repeating-linear-gradient(135deg,transparent_0_14px,rgb(20_18_15/0.08)_14px_28px)]"
+                  className="flex h-full w-full items-center justify-center"
                 >
-                  <span className="font-display text-8xl font-black text-cobalt">IN</span>
+                  <span className="font-display text-7xl font-semibold text-line">IN</span>
                 </div>
               )}
             </div>
-
-            <span
-              style={{ "--r": "-10deg" } as React.CSSProperties}
-              className="float absolute left-0 top-8 rounded-full border-2 border-ink bg-tangerine px-4 py-2 text-sm font-extrabold text-ink md:-left-6"
-            >
-              Aberto a propostas
-            </span>
-            <span
-              style={{ "--r": "6deg" } as React.CSSProperties}
-              className="float absolute -bottom-4 right-0 border-2 border-ink bg-cream px-4 py-2 text-sm font-extrabold text-ink [animation-delay:-2s] md:-right-3"
-            >
-              {profile.handle}
-            </span>
           </Tilt>
         </div>
       </div>
 
-      <dl className="border-t-2 border-ink bg-ink">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 md:grid-cols-4">
+      <dl className="border-t border-line">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 px-6 md:grid-cols-4">
           {stats.map((s) => (
-            <div key={s.label} className="border-cream/20 px-5 py-8 md:border-l md:first:border-l-0">
-              <dd className="font-display text-2xl font-black text-sun sm:text-3xl md:text-4xl">{s.value}</dd>
-              <dt className="mt-2 text-sm text-cream/80">{s.label}</dt>
+            <div key={s.label} className="border-line py-8 pr-4 md:border-l md:pl-6 md:first:border-l-0 md:first:pl-0">
+              <dd className="font-display text-2xl font-medium tracking-tight md:text-3xl">{s.value}</dd>
+              <dt className="mt-2 text-sm text-muted">{s.label}</dt>
             </div>
           ))}
         </div>

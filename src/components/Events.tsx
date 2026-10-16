@@ -1,6 +1,7 @@
 import { cacheLife } from "next/cache";
-import { events, type EventItem } from "@/data/site";
-import { Tilt } from "./Tilt";
+import { bookings, events, type EventItem } from "@/data/site";
+import { AgendaCalendar } from "./AgendaCalendar";
+import { Section } from "./Section";
 
 const dayFmt = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", timeZone: "UTC" });
 const monthFmt = new Intl.DateTimeFormat("pt-BR", { month: "short", timeZone: "UTC" });
@@ -15,43 +16,32 @@ function parts(date: string) {
   };
 }
 
-function Ticket({ event, tilt }: { event: EventItem; tilt: string }) {
+function Row({ event }: { event: EventItem }) {
   const { day, month, year } = parts(event.date);
   return (
-    <li className="reveal">
-      <Tilt max={7}>
-        <article
-          className={`flex border-2 border-ink bg-cream shadow-[8px_8px_0_0_var(--ink)] ${tilt}`}
+    <li className="flex items-center gap-6 border-b border-line py-6">
+      <time dateTime={event.date} className="w-16 shrink-0">
+        <span className="block font-display text-3xl font-medium leading-none">{day}</span>
+        <span className="mt-1 block text-xs uppercase tracking-wider text-muted">
+          {month} {year}
+        </span>
+      </time>
+      <div className="min-w-0 flex-1">
+        <h3 className="font-display text-lg font-medium leading-snug tracking-tight">{event.title}</h3>
+        <p className="mt-1 text-sm text-muted">
+          {event.venue} · {event.city}
+        </p>
+      </div>
+      {event.ticketUrl && (
+        <a
+          href={event.ticketUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="shrink-0 rounded-full border border-foreground px-5 py-2 text-sm transition-colors hover:bg-foreground hover:text-background"
         >
-          <time
-            dateTime={event.date}
-            className="flex w-28 shrink-0 flex-col items-center justify-center border-r-2 border-dashed border-ink bg-tangerine px-3 py-6 text-center md:w-32"
-          >
-            <span className="font-display text-5xl font-black leading-none">{day}</span>
-            <span className="mt-1 text-sm font-extrabold uppercase">{month}</span>
-            <span className="text-xs font-semibold">{year}</span>
-          </time>
-          <div className="flex min-w-0 flex-1 flex-col justify-between gap-5 p-5 md:p-6">
-            <div>
-              <h3 className="font-display text-xl font-black leading-tight tracking-tight">
-                {event.title}
-              </h3>
-              <p className="mt-2 font-medium">{event.venue}</p>
-              <p className="text-ink/70">{event.city}</p>
-            </div>
-            {event.ticketUrl && (
-              <a
-                href={event.ticketUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="self-start rounded-full bg-ink px-5 py-2 text-sm font-bold text-cream transition-colors hover:bg-cobalt"
-              >
-                Ingressos
-              </a>
-            )}
-          </div>
-        </article>
-      </Tilt>
+          Ingressos
+        </a>
+      )}
     </li>
   );
 }
@@ -64,51 +54,57 @@ export async function Events() {
   const upcoming = events.filter((e) => e.date >= today).sort((a, b) => a.date.localeCompare(b.date));
   const past = events.filter((e) => e.date < today).sort((a, b) => b.date.localeCompare(a.date));
 
-  return (
-    <section id="eventos" className="border-y-2 border-ink bg-sun">
-      <div className="mx-auto max-w-7xl px-5 py-24 md:py-32">
-        <h2 className="reveal max-w-3xl font-display text-5xl font-black leading-[1.05] tracking-tighter md:text-6xl">
-          Shows e eventos
-        </h2>
+  const days = new Map<string, "particular" | "publico">();
+  for (const b of bookings) days.set(b.date, b.kind);
+  for (const e of events) days.set(e.date, "publico");
 
-        {upcoming.length > 0 ? (
-          <ul className="mt-14 grid gap-10 md:grid-cols-2">
-            {upcoming.map((e, i) => (
-              <Ticket key={e.title + e.date} event={e} tilt={i % 2 ? "rotate-1" : "-rotate-1"} />
+  return (
+    <Section id="eventos" title="Shows e eventos">
+      <p className="mb-10 max-w-lg text-lg leading-relaxed text-muted">
+        Veja as datas que o Igor já tem fechadas. As que estão livres podem ser suas.{" "}
+        <a href="#contratar" className="text-foreground underline decoration-line underline-offset-4 hover:decoration-foreground">
+          Reservar uma data
+        </a>
+        .
+      </p>
+
+      <AgendaCalendar days={days} />
+
+      {upcoming.length > 0 && (
+        <div className="mt-16">
+          <h3 className="text-sm uppercase tracking-[0.2em] text-muted">Abertos ao público</h3>
+          <ul className="mt-4 border-t border-line">
+            {upcoming.map((e) => (
+              <Row key={e.title + e.date} event={e} />
             ))}
           </ul>
-        ) : (
-          <p className="mt-14 max-w-xl border-2 border-dashed border-ink p-6 text-lg font-medium">
-            As próximas datas de stand-up e do espetáculo Rayssa conta história saem primeiro no Instagram do
-            Igor. Quer um show na sua cidade ou no seu evento? É só chamar.
-          </p>
-        )}
+        </div>
+      )}
 
-        {past.length > 0 && (
-          <div className="mt-20">
-            <h3 className="font-display text-xl font-black">Já aconteceu</h3>
-            <ul className="mt-5 border-t-2 border-ink">
-              {past.map((e) => {
-                const { day, month, year } = parts(e.date);
-                return (
-                  <li
-                    key={e.title + e.date}
-                    className="flex flex-wrap items-baseline gap-x-6 gap-y-1 border-b-2 border-ink py-4"
-                  >
-                    <time dateTime={e.date} className="w-32 font-bold uppercase">
-                      {day} {month} {year}
-                    </time>
-                    <span className="font-display font-black">{e.title}</span>
-                    <span className="text-ink/70">
-                      {e.venue}, {e.city}
-                    </span>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        )}
-      </div>
-    </section>
+      {past.length > 0 && (
+        <div className="mt-16">
+          <h3 className="text-sm uppercase tracking-[0.2em] text-muted">Já aconteceu</h3>
+          <ul className="mt-4 border-t border-line">
+            {past.map((e) => {
+              const { day, month, year } = parts(e.date);
+              return (
+                <li
+                  key={e.title + e.date}
+                  className="flex flex-wrap items-baseline gap-x-6 gap-y-1 border-b border-line py-4 text-muted"
+                >
+                  <time dateTime={e.date} className="w-32 text-sm uppercase">
+                    {day} {month} {year}
+                  </time>
+                  <span className="font-display text-base font-medium text-foreground">{e.title}</span>
+                  <span className="text-sm">
+                    {e.venue}, {e.city}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+    </Section>
   );
 }

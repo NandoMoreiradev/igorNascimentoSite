@@ -1,19 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --cream: #f4efe4;
-  --ink: #14120f;
-  --cobalt: #2c3cf0;
-  --tangerine: #ff5a1f;
-  --sun: #ffc933;
+  --background: #faf9f6;
+  --foreground: #121212;
+  --muted: #6d6c67;
+  --line: #e4e2dc;
+  --surface: #f0eee9;
 }
 
 @theme inline {
-  --color-cream: var(--cream);
-  --color-ink: var(--ink);
-  --color-cobalt: var(--cobalt);
-  --color-tangerine: var(--tangerine);
-  --color-sun: var(--sun);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-surface: var(--surface);
   --font-sans: var(--font-hanken);
   --font-display: var(--font-unbounded);
 }
@@ -24,51 +24,30 @@ html {
 }
 
 body {
-  background: var(--cream);
-  color: var(--ink);
+  background: var(--background);
+  color: var(--foreground);
   font-family: var(--font-hanken), system-ui, sans-serif;
 }
 
 ::selection {
-  background: var(--sun);
-  color: var(--ink);
+  background: var(--foreground);
+  color: var(--background);
 }
 
-/* ---------- 3D ---------- */
+/* ---------- 3D (só na foto do topo) ---------- */
 
 .scene {
-  perspective: 1100px;
+  perspective: 1400px;
 }
 
 .tilt {
   transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transform-style: preserve-3d;
-  transition: transform 0.25s ease-out;
+  transition: transform 0.35s ease-out;
   will-change: transform;
 }
 
-.pop-1 {
-  transform: translateZ(28px);
-}
-.pop-2 {
-  transform: translateZ(64px);
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateZ(70px) translateY(0) rotate(var(--r, 0deg));
-  }
-  50% {
-    transform: translateZ(90px) translateY(-10px) rotate(var(--r, 0deg));
-  }
-}
-
-.float {
-  animation: float 5s ease-in-out infinite;
-}
-
-/* ---------- Faixas de marcas ---------- */
+/* ---------- Faixa de marcas ---------- */
 
 @keyframes marquee {
   to {
@@ -79,12 +58,7 @@ body {
 .marquee-track {
   display: flex;
   width: max-content;
-  animation: marquee 38s linear infinite;
-}
-
-.marquee-track.reverse {
-  animation-direction: reverse;
-  animation-duration: 46s;
+  animation: marquee 45s linear infinite;
 }
 
 /* ---------- Entrada ao rolar a página ---------- */
@@ -92,7 +66,7 @@ body {
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(56px) rotateX(14deg);
+    transform: translateY(28px);
   }
   to {
     opacity: 1;
@@ -104,7 +78,7 @@ body {
   .reveal {
     animation: rise linear both;
     animation-timeline: view();
-    animation-range: entry 0% entry 55%;
+    animation-range: entry 0% entry 45%;
   }
 }
 
@@ -115,7 +89,6 @@ body {
   .tilt {
     transform: none !important;
   }
-  .float,
   .marquee-track,
   .reveal {
     animation: none;

@@ -1,45 +1,50 @@
-import { profile } from "@/data/site";
+import { profile, videos } from "@/data/site";
 
 const links = [
   { href: "#sobre", label: "Sobre" },
   { href: "#trabalhos", label: "Trabalhos" },
   { href: "#marcas", label: "Marcas" },
   { href: "#eventos", label: "Eventos" },
+  ...(videos.length > 0 ? [{ href: "#videos", label: "Vídeos" }] : []),
+  { href: "#galeria", label: "Galeria" },
 ];
-
-const button =
-  "rounded-full border-2 border-ink bg-tangerine px-5 py-2 text-sm font-bold text-ink shadow-[3px_3px_0_0_var(--ink)] transition-transform hover:-translate-x-px hover:-translate-y-px";
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-50 border-b-2 border-ink bg-cream">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5">
-        <a href="#top" className="font-display text-sm font-black uppercase tracking-tight">
+    <header className="sticky top-0 z-50 border-b border-line bg-background/90 backdrop-blur">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+        <a href="#top" className="font-display text-sm font-semibold uppercase tracking-tight">
           {profile.name}
         </a>
 
-        <nav aria-label="Principal" className="hidden items-center gap-8 text-sm font-semibold md:flex">
+        <nav aria-label="Principal" className="hidden items-center gap-8 text-sm md:flex">
           {links.map((l) => (
-            <a key={l.href} href={l.href} className="underline-offset-4 hover:underline">
+            <a key={l.href} href={l.href} className="text-muted transition-colors hover:text-foreground">
               {l.label}
             </a>
           ))}
-          <a href="#contratar" className={button}>
+          <a
+            href="#contratar"
+            className="rounded-full bg-foreground px-5 py-2 text-background transition-opacity hover:opacity-80"
+          >
             Contratar
           </a>
         </nav>
 
         <details className="relative md:hidden">
-          <summary className="cursor-pointer list-none rounded-full border-2 border-ink px-4 py-1.5 text-sm font-bold">
+          <summary className="cursor-pointer list-none rounded-full border border-line px-4 py-1.5 text-sm">
             Menu
           </summary>
-          <div className="absolute right-0 mt-3 w-56 border-2 border-ink bg-cream p-2 shadow-[5px_5px_0_0_var(--ink)]">
+          <div className="absolute right-0 mt-3 w-52 rounded-xl border border-line bg-background p-2 shadow-lg">
             {links.map((l) => (
-              <a key={l.href} href={l.href} className="block px-3 py-2 font-semibold hover:bg-sun">
+              <a key={l.href} href={l.href} className="block rounded-lg px-3 py-2 text-sm hover:bg-surface">
                 {l.label}
               </a>
             ))}
-            <a href="#contratar" className="mt-1 block bg-tangerine px-3 py-2 text-center font-bold">
+            <a
+              href="#contratar"
+              className="mt-1 block rounded-lg bg-foreground px-3 py-2 text-center text-sm text-background"
+            >
               Contratar
             </a>
           </div>
