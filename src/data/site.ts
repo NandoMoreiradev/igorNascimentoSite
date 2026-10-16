@@ -8,7 +8,7 @@ export const profile = {
   photo: "/gallery/14.jpg", // foto do topo do site (arquivo em /public)
   instagram: "https://www.instagram.com/igornascimento_a/",
   email: "contato@igornascimento.com.br", // TODO: e-mail real
-  whatsapp: "5500000000000", // TODO: DDI + DDD + número, só dígitos
+  whatsapp: "557988390389", // DDI 55 + DDD 79 + número, só dígitos
 };
 
 // Número de seguidores conforme o perfil do Instagram em 15/10/2026. Atualize de tempos em tempos.
