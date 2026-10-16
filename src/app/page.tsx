@@ -7,6 +7,7 @@ import { Gallery } from "@/components/Gallery";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { Videos } from "@/components/Videos";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { Services } from "@/components/Services";
 
 export default function Home() {
@@ -24,6 +25,7 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
+      <WhatsAppButton />
     </>
   );
 }
