@@ -3,9 +3,10 @@
 import { useState } from "react";
 
 const types = [
-  "Publi com humor",
-  "Stand-up em evento",
+  "Publicidade",
+  "Stand-up",
   "Espetáculo Rayssa conta história",
+  "Espetáculo Solo",
   "Personagem Rayssa Rayanna",
   "Apresentação / mestre de cerimônias",
   "Outro",
